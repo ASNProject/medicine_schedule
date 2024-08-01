@@ -12,25 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'schedule_model.freezed.dart';
-part 'schedule_model.g.dart';
-
-@freezed
-class ScheduleModel with _$ScheduleModel {
-  const factory ScheduleModel({
-    required String day,
-    required String time,
-    required String m1,
-    required String m2,
-    required String m3,
-    required String m4,
-    required String m5,
-    required String m6,
-    required String m7,
-  }) = _ScheduleModel;
-
-  factory ScheduleModel.fromJson(Map<String, dynamic> json) =>
-      _$ScheduleModelFromJson(json);
-}
+export 'schedule_list_item_card.dart';

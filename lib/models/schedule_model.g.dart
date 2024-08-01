@@ -17,7 +17,6 @@ _$ScheduleModelImpl _$$ScheduleModelImplFromJson(Map<String, dynamic> json) =>
       m5: json['m5'] as String,
       m6: json['m6'] as String,
       m7: json['m7'] as String,
-      notification: json['notification'] as String,
     );
 
 Map<String, dynamic> _$$ScheduleModelImplToJson(_$ScheduleModelImpl instance) =>
@@ -31,5 +30,4 @@ Map<String, dynamic> _$$ScheduleModelImplToJson(_$ScheduleModelImpl instance) =>
       'm5': instance.m5,
       'm6': instance.m6,
       'm7': instance.m7,
-      'notification': instance.notification,
     };

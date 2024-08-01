@@ -29,7 +29,6 @@ mixin _$ScheduleModel {
   String get m5 => throw _privateConstructorUsedError;
   String get m6 => throw _privateConstructorUsedError;
   String get m7 => throw _privateConstructorUsedError;
-  String get notification => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,8 +51,7 @@ abstract class $ScheduleModelCopyWith<$Res> {
       String m4,
       String m5,
       String m6,
-      String m7,
-      String notification});
+      String m7});
 }
 
 /// @nodoc
@@ -78,7 +76,6 @@ class _$ScheduleModelCopyWithImpl<$Res, $Val extends ScheduleModel>
     Object? m5 = null,
     Object? m6 = null,
     Object? m7 = null,
-    Object? notification = null,
   }) {
     return _then(_value.copyWith(
       day: null == day
@@ -117,10 +114,6 @@ class _$ScheduleModelCopyWithImpl<$Res, $Val extends ScheduleModel>
           ? _value.m7
           : m7 // ignore: cast_nullable_to_non_nullable
               as String,
-      notification: null == notification
-          ? _value.notification
-          : notification // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -142,8 +135,7 @@ abstract class _$$ScheduleModelImplCopyWith<$Res>
       String m4,
       String m5,
       String m6,
-      String m7,
-      String notification});
+      String m7});
 }
 
 /// @nodoc
@@ -166,7 +158,6 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
     Object? m5 = null,
     Object? m6 = null,
     Object? m7 = null,
-    Object? notification = null,
   }) {
     return _then(_$ScheduleModelImpl(
       day: null == day
@@ -205,10 +196,6 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
           ? _value.m7
           : m7 // ignore: cast_nullable_to_non_nullable
               as String,
-      notification: null == notification
-          ? _value.notification
-          : notification // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -225,8 +212,7 @@ class _$ScheduleModelImpl implements _ScheduleModel {
       required this.m4,
       required this.m5,
       required this.m6,
-      required this.m7,
-      required this.notification});
+      required this.m7});
 
   factory _$ScheduleModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScheduleModelImplFromJson(json);
@@ -249,12 +235,10 @@ class _$ScheduleModelImpl implements _ScheduleModel {
   final String m6;
   @override
   final String m7;
-  @override
-  final String notification;
 
   @override
   String toString() {
-    return 'ScheduleModel(day: $day, time: $time, m1: $m1, m2: $m2, m3: $m3, m4: $m4, m5: $m5, m6: $m6, m7: $m7, notification: $notification)';
+    return 'ScheduleModel(day: $day, time: $time, m1: $m1, m2: $m2, m3: $m3, m4: $m4, m5: $m5, m6: $m6, m7: $m7)';
   }
 
   @override
@@ -270,15 +254,13 @@ class _$ScheduleModelImpl implements _ScheduleModel {
             (identical(other.m4, m4) || other.m4 == m4) &&
             (identical(other.m5, m5) || other.m5 == m5) &&
             (identical(other.m6, m6) || other.m6 == m6) &&
-            (identical(other.m7, m7) || other.m7 == m7) &&
-            (identical(other.notification, notification) ||
-                other.notification == notification));
+            (identical(other.m7, m7) || other.m7 == m7));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, day, time, m1, m2, m3, m4, m5, m6, m7, notification);
+  int get hashCode =>
+      Object.hash(runtimeType, day, time, m1, m2, m3, m4, m5, m6, m7);
 
   @JsonKey(ignore: true)
   @override
@@ -304,8 +286,7 @@ abstract class _ScheduleModel implements ScheduleModel {
       required final String m4,
       required final String m5,
       required final String m6,
-      required final String m7,
-      required final String notification}) = _$ScheduleModelImpl;
+      required final String m7}) = _$ScheduleModelImpl;
 
   factory _ScheduleModel.fromJson(Map<String, dynamic> json) =
       _$ScheduleModelImpl.fromJson;
@@ -328,8 +309,6 @@ abstract class _ScheduleModel implements ScheduleModel {
   String get m6;
   @override
   String get m7;
-  @override
-  String get notification;
   @override
   @JsonKey(ignore: true)
   _$$ScheduleModelImplCopyWith<_$ScheduleModelImpl> get copyWith =>

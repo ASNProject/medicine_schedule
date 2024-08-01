@@ -27,13 +27,7 @@ class AppConfig {
                 name: '/',
                 path: '/',
                 builder: (context, state) {
-                  return DashboardScreen(
-                    onPressedAddSchedule: (context) {
-                      GoRouter.of(context).pushNamed(
-                        AppConstanst.formScheduleScreen,
-                      );
-                    },
-                  );
+                  return DashboardScreen();
                 }),
             GoRoute(
                 name: AppConstanst.formScheduleScreen,

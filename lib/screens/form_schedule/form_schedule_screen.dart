@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:medicine_schedule/models/schedule_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FormScheduleScreen extends StatelessWidget {
   const FormScheduleScreen({super.key});
@@ -61,6 +65,26 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
     'Minggu',
   ];
 
+  _saveSchedule() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> scheduleList = prefs.getStringList('schedules') ?? [];
+
+    ScheduleModel newSchedule = ScheduleModel(
+      day: _selectedItem ?? '',
+      time: _selectedTime.toString(),
+      m1: m1.toString(),
+      m2: m2.toString(),
+      m3: m3.toString(),
+      m4: m4.toString(),
+      m5: m5.toString(),
+      m6: m6.toString(),
+      m7: m7.toString(),
+    );
+
+    scheduleList.add(json.encode(newSchedule.toJson()));
+    await prefs.setStringList('schedules', scheduleList);
+  }
+
   final TextEditingController _timeController = TextEditingController();
 
   Future<void> _selectTime(BuildContext context) async {
@@ -80,6 +104,7 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.lightBlue,
         title: const Text(
           'Tambah Jadwal',
@@ -159,8 +184,9 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                           decoration: const InputDecoration(
                             hintText: 'Pilih Jam',
                             border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8), // Adjust this value as needed
                           ),
-                          textAlignVertical: TextAlignVertical.center,
                         ),
                       ),
                     ),
@@ -173,71 +199,113 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 1'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 1'),
                       value: _medicine1,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine1 = newValue ?? false;
+                          if (!_medicine1) {
+                            m1 = 0;
+                          } else {
+                            m1 = 1;
+                          }
                         });
                       },
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 2'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 2'),
                       value: _medicine2,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine2 = newValue ?? false;
+                          if (!_medicine2) {
+                            m2 = 0;
+                          } else {
+                            m2 = 1;
+                          }
                         });
                       },
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 3'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 3'),
                       value: _medicine3,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine3 = newValue ?? false;
+                          if (!_medicine3) {
+                            m3 = 0;
+                          } else {
+                            m3 = 1;
+                          }
                         });
                       },
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 4'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 4'),
                       value: _medicine4,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine4 = newValue ?? false;
+                          if (!_medicine4) {
+                            m4 = 0;
+                          } else {
+                            m4 = 1;
+                          }
                         });
                       },
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 5'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 5'),
                       value: _medicine5,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine5 = newValue ?? false;
+                          if (!_medicine5) {
+                            m5 = 0;
+                          } else {
+                            m5 = 1;
+                          }
                         });
                       },
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 6'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 6'),
                       value: _medicine6,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine6 = newValue ?? false;
+                          if (!_medicine6) {
+                            m6 = 0;
+                          } else {
+                            m6 = 1;
+                          }
                         });
                       },
                     ),
                     const Gap(4.0),
                     CheckboxListTile(
-                      title: const Text('Medicine 7'),
+                      activeColor: Colors.lightBlue,
+                      title: const Text('Obat 7'),
                       value: _medicine7,
                       onChanged: (bool? newValue) {
                         setState(() {
                           _medicine7 = newValue ?? false;
+                          if (!_medicine7) {
+                            m7 = 0;
+                          } else {
+                            m7 = 1;
+                          }
                         });
                       },
                     ),
@@ -256,9 +324,11 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     backgroundColor: Colors.lightBlue,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0))),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: (_selectedItem != null && _selectedTime != null)
+                    ? () {
+                        _showAlertDialog(context);
+                      }
+                    : null,
                 child: const Text(
                   'Simpan',
                   style: TextStyle(
@@ -271,6 +341,34 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Simpan Jadwal'),
+          content: const Text('Apakah anda yakin akan menyimpan jadwal?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tidak'),
+            ),
+            TextButton(
+              onPressed: () {
+                _saveSchedule();
+                Navigator.of(context).pop(true);
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Ya, Simpan'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
