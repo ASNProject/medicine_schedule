@@ -110,19 +110,24 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                     ],
                   ),
                   const Gap(20.0),
-                  Expanded(
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const Gap(8.0),
-                      itemCount: _schedules.length,
-                      itemBuilder: (context, index) {
-                        final schedule = _schedules[index];
-                        return ScheduleListItemCard(
-                          schedule: schedule,
-                          onDelete: () => _deleteSchedule(index),
-                        );
-                      },
-                    ),
-                  )
+                  _schedules.isNotEmpty
+                      ? Expanded(
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                const Gap(8.0),
+                            itemCount: _schedules.length,
+                            itemBuilder: (context, index) {
+                              final schedule = _schedules[index];
+                              return ScheduleListItemCard(
+                                schedule: schedule,
+                                onDelete: () => _deleteSchedule(index),
+                              );
+                            },
+                          ),
+                        )
+                      : const Center(
+                          child: Text('Tidak ada jadwal'),
+                        )
                 ],
               ),
             ),
