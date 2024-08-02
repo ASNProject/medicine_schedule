@@ -16,6 +16,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:medicine_schedule/models/medicine_model.dart';
 import 'package:medicine_schedule/models/schedule_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,6 +66,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
     'Minggu',
   ];
 
+  List<MedicineModel> _medicines = [];
+
   _saveSchedule() async {
     final prefs = await SharedPreferences.getInstance();
     List<String> scheduleList = prefs.getStringList('schedules') ?? [];
@@ -98,6 +101,22 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
         _timeController.text = picked.format(context);
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMedicines();
+  }
+
+  Future<void> _loadMedicines() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> medicineList = prefs.getStringList('medicines') ?? [];
+    setState(() {
+      _medicines = medicineList
+          .map((e) => MedicineModel.fromJson(json.decode(e)))
+          .toList();
+    });
   }
 
   @override
@@ -200,7 +219,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 1'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m1 : 'Obat 1'),
                       value: _medicine1,
                       onChanged: (bool? newValue) {
                         setState(() {
@@ -216,7 +236,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 2'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m2 : 'Obat 2'),
                       value: _medicine2,
                       onChanged: (bool? newValue) {
                         setState(() {
@@ -232,7 +253,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 3'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m3 : 'Obat 3'),
                       value: _medicine3,
                       onChanged: (bool? newValue) {
                         setState(() {
@@ -248,7 +270,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 4'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m4 : 'Obat 4'),
                       value: _medicine4,
                       onChanged: (bool? newValue) {
                         setState(() {
@@ -264,7 +287,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 5'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m5 : 'Obat 5'),
                       value: _medicine5,
                       onChanged: (bool? newValue) {
                         setState(() {
@@ -280,7 +304,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 6'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m6 : 'Obat 6'),
                       value: _medicine6,
                       onChanged: (bool? newValue) {
                         setState(() {
@@ -296,7 +321,8 @@ class _FormScheduleScreenContentState extends State<FormScheduleScreenContent> {
                     const Gap(4.0),
                     CheckboxListTile(
                       activeColor: Colors.lightBlue,
-                      title: const Text('Obat 7'),
+                      title: Text(
+                          _medicines.isNotEmpty ? _medicines[0].m7 : 'Obat 7'),
                       value: _medicine7,
                       onChanged: (bool? newValue) {
                         setState(() {

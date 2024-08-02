@@ -13,3 +13,4 @@
 // limitations under the License.
 
 export 'schedule_model.dart';
+export 'medicine_model.dart';

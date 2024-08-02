@@ -12,9 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-class AppConstanst {
-  static const String loginScreen = '/login_screen';
-  static const String dashboardScreen = '/dashboard_screen';
-  static const String formScheduleScreen = '/form_schedule_screen';
-  static const String formMedicineScreen = '/form_medicine_screen';
-}
+export 'form_medicine_screen.dart';

@@ -44,11 +44,12 @@ class DashboardScreenContent extends StatefulWidget {
 
 class _DashboardScreenContentState extends State<DashboardScreenContent> {
   List<ScheduleModel> _schedules = [];
-
+  List<MedicineModel> _medicines = [];
   @override
   void initState() {
     super.initState();
     _loadSchedules();
+    _loadMedicines();
   }
 
   Future<void> _loadSchedules() async {
@@ -57,6 +58,16 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
     setState(() {
       _schedules = scheduleList
           .map((e) => ScheduleModel.fromJson(json.decode(e)))
+          .toList();
+    });
+  }
+
+  Future<void> _loadMedicines() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> medicineList = prefs.getStringList('medicines') ?? [];
+    setState(() {
+      _medicines = medicineList
+          .map((e) => MedicineModel.fromJson(json.decode(e)))
           .toList();
     });
   }
@@ -82,6 +93,27 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                onTap: () async {
+                  bool? data = await GoRouter.of(context).pushNamed(
+                    AppConstanst.formMedicineScreen,
+                    extra: _medicines,
+                  );
+
+                  if (data == true) {
+                    _loadMedicines();
+                  }
+                },
+                child: const Text(
+                  'Edit Obat',
+                ),
+              )
+            ],
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,20 +123,13 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: Column(
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Daftar Jadwal Obat',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.filter_list_rounded,
-                          size: 20,
                         ),
                       ),
                     ],

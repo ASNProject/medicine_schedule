@@ -11,10 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:medicine_schedule/models/models.dart';
 import 'package:medicine_schedule/routers/routes.dart';
+import 'package:medicine_schedule/screens/form_medicine/form_medicine.dart';
 import 'package:medicine_schedule/screens/screens.dart';
 
 class AppConfig {
@@ -24,17 +25,28 @@ class AppConfig {
       : _router = GoRouter(
           routes: [
             GoRoute(
-                name: '/',
-                path: '/',
-                builder: (context, state) {
-                  return DashboardScreen();
-                }),
+              name: '/',
+              path: '/',
+              builder: (context, state) {
+                return const DashboardScreen();
+              },
+            ),
             GoRoute(
-                name: AppConstanst.formScheduleScreen,
-                path: AppConstanst.formScheduleScreen,
-                builder: (context, state) {
-                  return const FormScheduleScreen();
-                })
+              name: AppConstanst.formScheduleScreen,
+              path: AppConstanst.formScheduleScreen,
+              builder: (context, state) {
+                return const FormScheduleScreen();
+              },
+            ),
+            GoRoute(
+              name: AppConstanst.formMedicineScreen,
+              path: AppConstanst.formMedicineScreen,
+              builder: (context, state) {
+                return FormMedicineScreen(
+                  medicineModel: state.extra as List<MedicineModel>,
+                );
+              },
+            )
           ],
           errorBuilder: (context, state) {
             return const Scaffold(

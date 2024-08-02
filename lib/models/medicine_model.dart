@@ -12,9 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-class AppConstanst {
-  static const String loginScreen = '/login_screen';
-  static const String dashboardScreen = '/dashboard_screen';
-  static const String formScheduleScreen = '/form_schedule_screen';
-  static const String formMedicineScreen = '/form_medicine_screen';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'medicine_model.freezed.dart';
+part 'medicine_model.g.dart';
+
+@freezed
+class MedicineModel with _$MedicineModel {
+  const factory MedicineModel({
+    required String m1,
+    required String m2,
+    required String m3,
+    required String m4,
+    required String m5,
+    required String m6,
+    required String m7,
+  }) = _MedicineModel;
+
+  factory MedicineModel.fromJson(Map<String, dynamic> json) =>
+      _$MedicineModelFromJson(json);
 }
