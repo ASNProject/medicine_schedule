@@ -1,8 +1,21 @@
-import 'package:flutter/material.dart';
-import 'package:medicine_schedule/routers/routes.dart';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medicine_schedule/routers/routes.dart';
+import 'package:medicine_schedule/utils/utils.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
+  NotificationHelper.init();
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+  );
+  flutterLocalNotificationsPlugin.initialize(initializationSettings);
   runApp(MyApp());
 }
 

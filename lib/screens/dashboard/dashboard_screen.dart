@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicine_schedule/models/models.dart';
 import 'package:medicine_schedule/routers/routes.dart';
+import 'package:medicine_schedule/utils/utils.dart';
 import 'package:medicine_schedule/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,11 +47,30 @@ class DashboardScreenContent extends StatefulWidget {
 class _DashboardScreenContentState extends State<DashboardScreenContent> {
   List<ScheduleModel> _schedules = [];
   List<MedicineModel> _medicines = [];
+  late Timer _timer;
+  DateTime _currentTime = DateTime.now();
+
   @override
   void initState() {
     super.initState();
     _loadSchedules();
     _loadMedicines();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        _currentTime = DateTime.now();
+      });
+      _scheduleAlarm();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<void> _loadSchedules() async {
@@ -79,6 +100,44 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
       scheduleList.removeAt(index);
       await prefs.setStringList('schedules', scheduleList);
       _loadSchedules();
+    }
+  }
+
+  Future<void> _scheduleAlarm() async {
+    for (var schedule in _schedules) {
+      final dayIndex = _dayToIndex(schedule.day);
+      final scheduleTime = parseAndFormatTimeOfDayString(schedule.time);
+      final scheduleHour = int.parse(scheduleTime.split(':')[0]);
+      final scheduleMinute = int.parse(scheduleTime.split(':')[1]);
+
+      if (dayIndex == DateTime.now().weekday) {
+        if (scheduleHour == DateTime.now().hour &&
+            scheduleMinute == DateTime.now().minute) {
+          NotificationHelper.scheduledNotification(
+              'Jadwal Minum Obat', 'Waktunya minum obat');
+        }
+      }
+    }
+  }
+
+  int _dayToIndex(String day) {
+    switch (day) {
+      case 'Senin':
+        return 1;
+      case 'Selasa':
+        return 2;
+      case 'Rabu':
+        return 3;
+      case 'Kamis':
+        return 4;
+      case "Jum'at":
+        return 5;
+      case 'Sabtu':
+        return 6;
+      case 'Minggu':
+        return 7;
+      default:
+        return 1;
     }
   }
 
@@ -145,6 +204,7 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                               final schedule = _schedules[index];
                               return ScheduleListItemCard(
                                 schedule: schedule,
+                                medicine: _medicines[index],
                                 onDelete: () => _deleteSchedule(index),
                               );
                             },
@@ -174,6 +234,9 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                   if (data == true) {
                     _loadSchedules();
                   }
+
+                  // NotificationHelper.sheduledNotification(
+                  //     'Jadwal Minum Obat', 'Haii');
                 },
                 icon: const Icon(
                   Icons.add,
