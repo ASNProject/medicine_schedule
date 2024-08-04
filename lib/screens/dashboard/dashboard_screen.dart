@@ -217,7 +217,7 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
               ),
               PopupMenuItem(
                 onTap: ()  {
-                  _logout(context);
+                  _showAlertDialog(context);
                 },
                 child: const Row(
                   children: [
@@ -322,5 +322,31 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
     if (context.mounted) {
       GoRouter.of(context).pushReplacement('/');
     }
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Keluar'),
+          content: const Text('Apakah anda yakin akan keluar dari aplikasi?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                _logout(context);
+              },
+              child: const Text('Ya, Keluar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tidak'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
