@@ -19,11 +19,12 @@ import 'package:medicine_schedule/utils/utils.dart';
 
 class ScheduleListItemCard extends StatelessWidget {
   final ScheduleModel schedule;
-  final MedicineModel medicine;
+  final MedicineModel? medicine;
   final VoidCallback onDelete;
+
   const ScheduleListItemCard({
     required this.schedule,
-    required this.medicine,
+    this.medicine,
     required this.onDelete,
     super.key,
   });
@@ -82,13 +83,20 @@ class ScheduleListItemCard extends StatelessWidget {
                     const Gap(8.0),
                     Wrap(
                       children: [
-                        _buildMedicineList(context, schedule.m1, medicine.m1),
-                        _buildMedicineList(context, schedule.m2, medicine.m2),
-                        _buildMedicineList(context, schedule.m3, medicine.m3),
-                        _buildMedicineList(context, schedule.m4, medicine.m4),
-                        _buildMedicineList(context, schedule.m5, medicine.m5),
-                        _buildMedicineList(context, schedule.m6, medicine.m6),
-                        _buildMedicineList(context, schedule.m7, medicine.m7),
+                        _buildMedicineList(context, schedule.m1,
+                            medicine != null ? medicine!.m1 : 'Obat 1'),
+                        _buildMedicineList(context, schedule.m2,
+                            medicine != null ? medicine!.m2 : 'Obat 2'),
+                        _buildMedicineList(context, schedule.m3,
+                            medicine != null ? medicine!.m3 : 'Obat 3'),
+                        _buildMedicineList(context, schedule.m4,
+                            medicine != null ? medicine!.m4 : 'Obat 4'),
+                        _buildMedicineList(context, schedule.m5,
+                            medicine != null ? medicine!.m5 : 'Obat 5'),
+                        _buildMedicineList(context, schedule.m6,
+                            medicine != null ? medicine!.m6 : 'Obat 6'),
+                        _buildMedicineList(context, schedule.m7,
+                            medicine != null ? medicine!.m7 : 'Obat 7'),
                       ],
                     )
                   ],

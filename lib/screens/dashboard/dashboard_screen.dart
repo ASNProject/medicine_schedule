@@ -170,7 +170,7 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
       'day': day,
       'time': time,
       'a': m1,
-      'b' : m2,
+      'b': m2,
       'c': m3,
       'd': m4,
       'e': m5,
@@ -205,10 +205,30 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                     _loadMedicines();
                   }
                 },
-                child: const Text(
-                  'Edit Obat',
+                child: const Row(
+                  children: [
+                    Icon(Icons.edit),
+                    Gap(4.0),
+                    Text(
+                      'Edit Obat',
+                    ),
+                  ],
                 ),
-              )
+              ),
+              PopupMenuItem(
+                onTap: ()  {
+                  _logout(context);
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.logout),
+                    Gap(4.0),
+                    Text(
+                      'Keluar',
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ],
@@ -241,9 +261,12 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                             itemCount: _schedules.length,
                             itemBuilder: (context, index) {
                               final schedule = _schedules[index];
+                              final medicine = _medicines.length > index
+                                  ? _medicines[index]
+                                  : null;
                               return ScheduleListItemCard(
                                 schedule: schedule,
-                                medicine: _medicines[index],
+                                medicine: medicine,
                                 onDelete: () => _deleteSchedule(index),
                               );
                             },
@@ -291,5 +314,13 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
         ],
       ),
     );
+  }
+
+  void _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user');
+    if (context.mounted) {
+      GoRouter.of(context).pushReplacement('/');
+    }
   }
 }

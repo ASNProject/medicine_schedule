@@ -35,14 +35,7 @@ class _FormLoginScreenContentState extends State<FormLoginScreenContent> {
   @override
   void initState() {
     super.initState();
-    _loadUser();
-    _fetchData();
-    print('Hasilnya $user');
-    // if (user == '1') {
-    //   GoRouter.of(context).pushReplacement(AppConstanst.dashboardScreen);
-    // } else {
-    //   _fetchData();
-    // }
+    _checkLogin(context);
   }
 
   void _fetchData() async {
@@ -65,6 +58,20 @@ class _FormLoginScreenContentState extends State<FormLoginScreenContent> {
   _savedLogin() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', '1');
+  }
+
+  void _checkLogin(BuildContext context) async  {
+    final prefs = await SharedPreferences.getInstance();
+    final user = prefs.getString('user');
+    if (user == '1') {
+      if (context.mounted) {
+        GoRouter.of(context)
+            .pushReplacement(AppConstanst.dashboardScreen);
+      }
+    } else {
+      _loadUser();
+      _fetchData();
+    }
   }
 
   @override
@@ -136,24 +143,23 @@ class _FormLoginScreenContentState extends State<FormLoginScreenContent> {
                     ),
                   ),
                 ),
-                const Gap(20.0),
-                // Row(
-                //   children: [
-                //     const Text(
-                //       'Ingat Saya',
-                //       style: TextStyle(fontSize: 12.0),
-                //     ),
-                //     Checkbox(
-                //       activeColor: Colors.lightBlue,
-                //       value: _rememberMe,
-                //       onChanged: (bool? newValue) {
-                //         setState(() {
-                //           _rememberMe = newValue ?? false;
-                //         });
-                //       },
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    const Text(
+                      'Ingat Saya',
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                    Checkbox(
+                      activeColor: Colors.lightBlue,
+                      value: _rememberMe,
+                      onChanged: (bool? newValue) {
+                        setState(() {
+                          _rememberMe = newValue ?? false;
+                        });
+                      },
+                    ),
+                  ],
+                ),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
