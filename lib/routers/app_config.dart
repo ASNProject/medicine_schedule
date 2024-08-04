@@ -11,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicine_schedule/models/models.dart';
 import 'package:medicine_schedule/routers/routes.dart';
-import 'package:medicine_schedule/screens/form_medicine/form_medicine.dart';
 import 'package:medicine_schedule/screens/screens.dart';
 
 class AppConfig {
@@ -28,8 +28,15 @@ class AppConfig {
               name: '/',
               path: '/',
               builder: (context, state) {
-                return const DashboardScreen();
+                return const FormLoginScreen();
               },
+            ),
+            GoRoute(
+              name: AppConstanst.dashboardScreen,
+              path: AppConstanst.dashboardScreen,
+              builder: (context, state) {
+                return const DashboardScreen();
+              }
             ),
             GoRoute(
               name: AppConstanst.formScheduleScreen,

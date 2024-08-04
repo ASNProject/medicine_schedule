@@ -14,3 +14,5 @@
 
 export 'dashboard/dashboard.dart';
 export 'form_schedule/form_schedule.dart';
+export 'form_login/form_login.dart';
+export 'form_medicine/form_medicine.dart';

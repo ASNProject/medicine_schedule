@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "128890619316",
+    "firebase_url": "https://schedule-medicine-default-rtdb.firebaseio.com",
+    "project_id": "schedule-medicine",
+    "storage_bucket": "schedule-medicine.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128890619316:android:566d96594791e2953e9ee1",
+        "android_client_info": {
+          "package_name": "com.example.medicine_schedule"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl7nd5_CWrnLwOGpaMdXcDiMneKnza6YU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
