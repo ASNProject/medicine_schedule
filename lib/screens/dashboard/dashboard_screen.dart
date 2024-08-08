@@ -15,6 +15,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -45,6 +46,8 @@ class DashboardScreenContent extends StatefulWidget {
 }
 
 class _DashboardScreenContentState extends State<DashboardScreenContent> {
+  final DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
+
   List<ScheduleModel> _schedules = [];
   List<MedicineModel> _medicines = [];
   late Timer _timer;
@@ -115,6 +118,17 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
             scheduleMinute == DateTime.now().minute) {
           NotificationHelper.scheduledNotification(
               'Jadwal Minum Obat', 'Waktunya minum obat');
+          _sendData(
+            dayIndex.toString(),
+            scheduleTime,
+            schedule.m1,
+            schedule.m2,
+            schedule.m3,
+            schedule.m4,
+            schedule.m5,
+            schedule.m6,
+            schedule.m7,
+          );
         }
       }
     }
@@ -139,6 +153,31 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
       default:
         return 1;
     }
+  }
+
+  void _sendData(
+    String day,
+    String time,
+    String m1,
+    String m2,
+    String m3,
+    String m4,
+    String m5,
+    String m6,
+    String m7,
+  ) {
+    _databaseReference.child('data').set({
+      'day': day,
+      'time': time,
+      'a': m1,
+      'b': m2,
+      'c': m3,
+      'd': m4,
+      'e': m5,
+      'f': m6,
+      'g': m7,
+      'notif': '1',
+    });
   }
 
   @override
@@ -166,10 +205,30 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                     _loadMedicines();
                   }
                 },
-                child: const Text(
-                  'Edit Obat',
+                child: const Row(
+                  children: [
+                    Icon(Icons.edit),
+                    Gap(4.0),
+                    Text(
+                      'Edit Obat',
+                    ),
+                  ],
                 ),
-              )
+              ),
+              PopupMenuItem(
+                onTap: ()  {
+                  _showAlertDialog(context);
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.logout),
+                    Gap(4.0),
+                    Text(
+                      'Keluar',
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ],
@@ -202,9 +261,12 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                             itemCount: _schedules.length,
                             itemBuilder: (context, index) {
                               final schedule = _schedules[index];
+                              final medicine = _medicines.length > index
+                                  ? _medicines[index]
+                                  : null;
                               return ScheduleListItemCard(
                                 schedule: schedule,
-                                medicine: _medicines[index],
+                                medicine: medicine,
                                 onDelete: () => _deleteSchedule(index),
                               );
                             },
@@ -234,9 +296,6 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
                   if (data == true) {
                     _loadSchedules();
                   }
-
-                  // NotificationHelper.sheduledNotification(
-                  //     'Jadwal Minum Obat', 'Haii');
                 },
                 icon: const Icon(
                   Icons.add,
@@ -254,6 +313,40 @@ class _DashboardScreenContentState extends State<DashboardScreenContent> {
           ),
         ],
       ),
+    );
+  }
+
+  void _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user');
+    if (context.mounted) {
+      GoRouter.of(context).pushReplacement('/');
+    }
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Keluar'),
+          content: const Text('Apakah anda yakin akan keluar dari aplikasi?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                _logout(context);
+              },
+              child: const Text('Ya, Keluar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tidak'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
